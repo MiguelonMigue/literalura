@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface LibroRepository extends JpaRepository<Libro,Long> {
     List<Libro> findByIdioma(String idioma);
-    boolean existsByTituloIgnoreCase(String titulo);
+    List<Libro>save(String titulo);
     Long countByIdioma(String idioma);
     List<Libro> findByIdiomaIgnoreCase(String idioma);
     Page<Libro> findAll(Pageable pageable);
 
 
-
+    boolean existsByTitulo(String titulo);
 }

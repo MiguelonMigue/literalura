@@ -36,69 +36,49 @@ public class LibroService {
 
 
     public void buscarYGuardarLibro(String titulo) {
-
-//        String url = "https://gutendex.com/books/?search=" + titulo.replace(" ", "%20");
-//        String json = consumoApi.obtenerDatos(url); // tu clase de API
-//
-//        if (json == null || json.isBlank()) {
-//            System.out.println("❌ No se pudo obtener datos de la API.");
-//            return;
-//        }
-//
-//        Resultados resultados = conversor.desdeJson(json, Resultados.class);
-//
-//        if (resultados == null || resultados.getResultados().isEmpty()) {
-//            System.out.println("❌ No se encontraron libros con ese título.");
-//            return;
-//        }
-//        DatosLibro datos = resultado.getResultados().get(0);
-//        if (datos.getTitulo() == null || datos.getTitulo().isBlank() ||
-//                datos.getIdiomas().isEmpty() ||
-//                datos.getAutores().isEmpty()) {
-//            System.out.println("❌ El resultado no contiene todos los datos necesarios.");
-//            return;
-//        }
-//
-//        // Primer resultado
-//
-//        Libro libro = new Libro();
-//        libro.setTitulo(datos.getTitulo());
-//        libro.setIdioma(datos.getIdiomas().get(0)); // solo primer idioma
-//        libro.setDescargas(datos.getDescargas());
-//
-//        DatosAutor datosAutor = datos.getAutores().get(0); // primer autor
-//        Autor autor = new Autor();
-//        autor.setNombre(datosAutor.getNombre());
-//        autor.setNacimiento(datosAutor.getNacimiento());
-//        autor.setFallecimiento(datosAutor.getFallecimiento());
-//
-//        libro.setAutor(autor);
-//        libroRepository.save(libro); // guarda también el autor (Cascade)
-
         try {
             String url = "https://gutendex.com/books/?search=" + URLEncoder.encode(titulo, StandardCharsets.UTF_8);
             String json = consumoApi.obtenerDatos(url);
 
-            // Validación clave para evitar el error
+            // Validación clave para evitar error
             if (json == null || json.isBlank()) {
-                System.out.println("❌ No se recibió respuesta de la API.");
+                System.out.println("✘ No se recibió respuesta de la API.");
                 return;
             }
 
             Resultados resultado = conversor.desdeJson(json, Resultados.class);
 
-            // 🔒 Validación para evitar NullPointerException
             if (resultado == null || resultado.getResultados() == null || resultado.getResultados().isEmpty()) {
-                System.out.println("❌ No se encontraron libros con ese título.");
+                System.out.println("✘ No se encontraron libros con ese título.");
                 return;
             }
 
-            DatosLibro datos = resultado.getResultados().get(0);
+            LibroDTO libroDTO = resultado.getResultados().get(0);
 
-            // Aquí continúa tu lógica para guardar el libro
+            // Verificar si ya está guardado
+            if (libroRepository.existsByTitulo(libroDTO.titulo())) {
+                System.out.println("⚠ El libro ya existe en la base de datos.");
+                return;
+            }
+
+            // Crear autor desde DTO
+            DatosAutor datosAutor = libroDTO.autores();
+            Autor autor = new Autor(datosAutor);
+
+            // Verificar si ya existe el autor
+            Autor autorFinal = autorRepository.findByNombre(autor.getNombre())
+                    .orElseGet(() -> autorRepository.save(autor));
+
+            // Crear y guardar libro con autor
+            Libro libro = new Libro(libroDTO);
+            libro.setAutor(autorFinal);
+            libroRepository.save(libro);
+
+            System.out.println("✅ Libro guardado: " + libro.getTitulo());
 
         } catch (Exception e) {
-            System.out.println("❌ Error al buscar el libro: " + e.getMessage());
+            System.out.println("✘ Error al buscar o guardar el libro: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

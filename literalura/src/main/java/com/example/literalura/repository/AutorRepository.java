@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface AutorRepository extends JpaRepository<Autor,Long> {
     List<Autor> findByNacimientoLessThanEqualAndFallecimientoGreaterThanEqual(int nacimiento, int fallecimiento);
 
+    Optional<Autor> findByNombre(String nombre);
+
 }

@@ -12,6 +12,9 @@ public class Autor {
     private Integer nacimiento;
     private Integer fallecimiento;
 
+    public Autor(DatosAutor datosAutor) {
+    }
+
     public Long getId() {
         return id;
     }

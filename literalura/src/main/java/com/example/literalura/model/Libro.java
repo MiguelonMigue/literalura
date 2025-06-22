@@ -1,5 +1,6 @@
 package com.example.literalura.model;
 
+import com.example.literalura.dto.LibroDTO;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -11,8 +12,14 @@ public class Libro {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
-    private String idioma;
+    private List <String> idiomas;
     private Integer descargas;
+
+    public Libro(LibroDTO dto) {
+        this.titulo = dto.titulo();
+        this.idiomas = dto.idiomas();
+        this.descargas = dto.descargas();
+    }
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Autor autor;
@@ -33,12 +40,12 @@ public class Libro {
         this.titulo = titulo;
     }
 
-    public String getIdioma() {
-        return idioma;
+    public List <String> getIdiomas() {
+        return idiomas;
     }
 
-    public void setIdioma(String idioma) {
-        this.idioma = idioma;
+    public void setIdiomas(List<String> idiomas) {
+        this.idiomas = idiomas;
     }
 
     public Integer getDescargas() {
@@ -62,7 +69,7 @@ public class Libro {
         return "Libro{" +
                 "id=" + id +
                 ", titulo='" + titulo + '\'' +
-                ", idioma='" + idioma + '\'' +
+                ", idioma='" + idiomas + '\'' +
                 ", descargas=" + descargas +
                 ", autor=" + autor +
                 '}';
