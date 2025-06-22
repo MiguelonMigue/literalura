@@ -7,34 +7,15 @@ import java.util.List;
 @Entity
 @Table(name = "libros")
 public class Libro {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
     private String titulo;
-    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Autor> autores;
-    private List <String> idiomas;
-    private Integer numeroDescargas;
+    private String idioma;
+    private Integer descargas;
 
-    public Libro() {
-    }
-
-    public Libro(Long id, String titulo, List<String> idiomas, List<Autor> autores, Integer numeroDescargas) {
-        this.id = id;
-        this.titulo = titulo;
-        this.idiomas = idiomas;
-        this.autores = autores;
-        this.numeroDescargas = numeroDescargas;
-    }
-
-    @Override
-    public String toString(){
-        return "Título: " + titulo +
-                "Autores: " + autores +
-                "Idiomas: " + idiomas +
-                "Número de descargas: " + numeroDescargas;
-    }
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Autor autor;
 
     public Long getId() {
         return id;
@@ -52,29 +33,38 @@ public class Libro {
         this.titulo = titulo;
     }
 
-    public List<Autor> getAutores() {
-        return autores;
+    public String getIdioma() {
+        return idioma;
     }
 
-    public void setAutores(List<Autor> autores) {
-        this.autores = autores;
+    public void setIdioma(String idioma) {
+        this.idioma = idioma;
     }
 
-    public List<String> getIdiomas() {
-        return idiomas;
+    public Integer getDescargas() {
+        return descargas;
     }
 
-    public void setIdiomas(List<String> idiomas) {
-        this.idiomas = idiomas;
+    public void setDescargas(Integer descargas) {
+        this.descargas = descargas;
     }
 
-    public Integer getNumeroDescargas() {
-        return numeroDescargas;
+    public Autor getAutor() {
+        return autor;
     }
 
-    public void setNumeroDescargas(Integer numeroDescargas) {
-        this.numeroDescargas = numeroDescargas;
+    public void setAutor(Autor autor) {
+        this.autor = autor;
     }
 
-
+    @Override
+    public String toString() {
+        return "Libro{" +
+                "id=" + id +
+                ", titulo='" + titulo + '\'' +
+                ", idioma='" + idioma + '\'' +
+                ", descargas=" + descargas +
+                ", autor=" + autor +
+                '}';
+    }
 }

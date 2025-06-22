@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AutorRepository extends JpaRepository<Autor,Long> {
-    Optional<Autor>findByNombreContainsIgnoreCase(String nombreAutor);
-    List<Autor> findByAnioDeNacimientoIgnoreCase(Integer anioDeNacimiento);
-    List<Autor>findByAnioDeFallecimientoIgnoreCase(Integer anioDeFallecimiento);
+    List<Autor> findByNacimientoLessThanEqualAndFallecimientoGreaterThanEqual(int nacimiento, int fallecimiento);
+
 }

@@ -8,15 +8,45 @@ import jakarta.persistence.OneToMany;
 
 import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record DatosLibro(
+public class DatosLibro {
         @JsonAlias("title")
-        String titulo,
+        private String titulo;
         @JsonAlias("authors")
-        List<Autor> autores,
+        private List<DatosAutor> autores;
         @JsonAlias("languages")
-        String idiomas,
+        private List<String> idiomas;
         @JsonAlias("download_count")
-        Integer numeroDescargas
+        private Integer descargas;
 
-){
+        public String getTitulo() {
+                return titulo;
+        }
+
+        public void setTitulo(String titulo) {
+                this.titulo = titulo;
+        }
+
+        public List<DatosAutor> getAutores() {
+                return autores;
+        }
+
+        public void setAutores(List<DatosAutor> autores) {
+                this.autores = autores;
+        }
+
+        public List<String> getIdiomas() {
+                return idiomas;
+        }
+
+        public void setIdiomas(List<String> idiomas) {
+                this.idiomas = idiomas;
+        }
+
+        public Integer getDescargas() {
+                return descargas;
+        }
+
+        public void setNumeroDescargas(Integer descargas) {
+                this.descargas = descargas;
+        }
 }
