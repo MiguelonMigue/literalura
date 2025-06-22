@@ -1,4 +1,10 @@
 package com.example.literalura.dto;
 
-public class AutorDTO {
+import com.fasterxml.jackson.annotation.JsonAlias;
+
+public record AutorDTO(
+        String nombre,
+        Integer anioDeNacimiento,
+        Integer anioDeFallecimiento
+) {
 }
