@@ -4,7 +4,6 @@ import com.example.literalura.model.Libro;
 import com.example.literalura.repository.LibroRepository;
 import com.example.literalura.service.LibroService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.Normalizer;
 import java.util.Scanner;
+
 @Component
 
 public class Principal {
@@ -19,6 +19,7 @@ public class Principal {
     @Autowired
     private final LibroService libroService;
     private LibroRepository libroRepository;
+    private Libro libro;
     @Autowired
     public Principal(LibroService libroService) {
         this.libroService = libroService;
@@ -73,7 +74,7 @@ public class Principal {
                         libroService.buscarYGuardarLibro(titulo);
                     }
 
-                    case 2 -> libroService.listarLibros();
+                    case 2 -> libroService.listarLibros(libro.getTitulo());
                     case 3 -> {
                         System.out.println("Ingrese el idioma (ej: en, es, fr):");
                         String idioma = normalizarTexto(scanner.nextLine());

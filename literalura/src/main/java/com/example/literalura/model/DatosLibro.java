@@ -14,7 +14,7 @@ public class DatosLibro {
         @JsonAlias("authors")
         private List<DatosAutor> autores;
         @JsonAlias("languages")
-        private List<String> idiomas;
+        private String idiomas;
         @JsonAlias("download_count")
         private Integer descargas;
 
@@ -34,11 +34,11 @@ public class DatosLibro {
                 this.autores = autores;
         }
 
-        public List<String> getIdiomas() {
+        public String getIdiomas() {
                 return idiomas;
         }
 
-        public void setIdiomas(List<String> idiomas) {
+        public void setIdiomas(String idiomas) {
                 this.idiomas = idiomas;
         }
 

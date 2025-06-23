@@ -1,19 +1,12 @@
 package com.example.literalura.dto;
 
-import com.example.literalura.model.Autor;
-import com.fasterxml.jackson.annotation.JsonAlias;
-
 import java.util.List;
+import java.util.Set;
 
 public record LibroDTO(
-    String titulo,
-    List<Autor> autores,
-    List <String> idiomas,
-    Integer descargas
+        String titulo,
+        Set<AutorDTO> autores,
+        String idiomas,
+        int descargas
 
-
-        // Puedes mapear autor más adelante
-){
-
-
-}
+) {}
